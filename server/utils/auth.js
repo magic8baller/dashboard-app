@@ -1,8 +1,8 @@
 import dotenv from 'dotenv'
+import jwtMiddleware from 'express-jwt'
 import jwt from 'jsonwebtoken'
 import User from '../resources/user/user.model.js'
 dotenv.config()
-
 const {JWT_EXP, JWT_SECRET} = process.env
 
 
@@ -12,13 +12,17 @@ export const newToken = user => {
 	})
 }
 
-export const verifyToken = token =>
-	new Promise((resolve, reject) => {
-		jwt.verify(token, JWT_SECRET, (err, payload) => {
-			if (err) return reject(err)
-			resolve(payload)
-		})
-	})
+// export const verifyToken = token =>
+// 	new Promise((resolve, reject) => {
+// 		jwt.verify(req.headers['x-access-token'], JWT_SECRET, (err, payload) => {
+// 			if (err) {
+// 				res.json({status: "error", message: err.message, data: null});
+// 				return reject(err);
+// 			}
+// 			req.body.id = payload.id
+// 			resolve(payload)
+// 		})
+// 	})
 
 export const signup = async (req, res, next) => {
 	const {email, password} = req.body
@@ -44,7 +48,7 @@ export const signup = async (req, res, next) => {
 				.send({message: 'User already exists', success: false});
 		}
 		const user = new User({email, password})
-	user.save(function (err) {
+		user.save(function (err) {
 			if (err) return next(err)
 			const token = newToken(user)
 			return res.status(201).send({token, user})
@@ -85,30 +89,30 @@ export const signin = async (req, res, next) => {
 }
 
 
-export const protect = async (req, res, next) => {
-	const bearer = req.headers.authorization
+export const protect = jwtMiddleware	({secret: JWT_SECRET})
 
-	if (!bearer || !bearer.startsWith('Bearer ')) {
-		return res.status(401).end()
-	}
 
-	const token = bearer.split('Bearer ')[1].trim()
-	let payload
-	try {
-		payload = await verifyToken(token)
-	} catch (e) {
-		return res.status(401).end()
-	}
+// 	const token = req.headers["x-access-token"];
 
-	const user = await User.findById(payload.id)
-		.select('-password')
-		.lean()
-		.exec()
+// 	// Check if not token
+// 	if (!token) {
+// 		return res.status(401).json({msg: 'No token, authorization denied'});
+// 	}
 
-	if (!user) {
-		return res.status(401).end()
-	}
+// 	// Verify token
+// 	try {
+// 		await jwt.verify(token, JWT_SECRET, (error, decoded) => {
+// 			if (error) {
+// 				res.status(401).json({msg: 'Token is not valid'});
+// 			}
+// 			else {
+// 				req.user._id = decoded.id;
+// 				next();
+// 			}
+// 		});
+// 	} catch (err) {
+// 		console.error('something wrong with auth middleware')
+// 		res.status(500).json({msg: 'Server Error'});
+// 	}
 
-	req.user = user
-	next()
-}
+// }
