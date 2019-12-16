@@ -2,7 +2,6 @@ import dotenv from 'dotenv'
 dotenv.config()
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
-// import jwt from 'jsonwebtoken'
 
 const userSchema = mongoose.Schema(
 	{

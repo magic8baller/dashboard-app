@@ -1,46 +1,25 @@
 {
-  "name": "dashboard-app-server",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon index.js",
+		"start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/magic8baller/dashboard-app.git"
   },
   "keywords": [],
   "author": "Leslie T",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/magic8baller/dashboard-app/issues"
-  },
-  "homepage": "https://github.com/magic8baller/dashboard-app#readme",
   "dependencies": {
     "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-jwt": "^5.3.1",
     "express-validator": "^6.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.1",
-    "morgan": "^1.9.1",
-    "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
-    "validator": "^12.1.0"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.7.5",
-    "@babel/core": "^7.7.5",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/plugin-proposal-object-rest-spread": "^7.7.4",
-    "@babel/preset-env": "^7.7.6",
-    "babel-core": "^6.26.3",
-    "rimraf": "^3.0.0"
+    "morgan": "^1.9.1"
   }
 }
